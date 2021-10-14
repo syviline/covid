@@ -1,0 +1,79 @@
+* {
+    padding: 0;
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.covid-info {
+    margin-top: 100px;
+}
+
+.covid-info .label {
+    display: flex;
+    justify-content: space-between;
+}
+
+.last-update {
+    color: #737373;
+    margin-top: 30px;
+}
+
+.covid-data-label {
+    color: #1E3A8A;
+    font-size: 64px;
+    width: 350px;
+    line-height: 80px;
+}
+
+.virus-img {
+    width: 256px;
+    height: 256px;
+}
+
+.data-choice {
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+}
+
+.data-choice a.selected {
+    color: #4338CA;
+    border-bottom: 3px solid #4338CA;
+}
+
+.data-choice a {
+    width: 100px;
+    text-align: center;
+    padding: 0 20px 10px 20px;
+    font-weight: 600;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.covid-data {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-top: 50px;
+}
+
+.covid-data .number {
+    font-size: 42px;
+    font-weight: 600;
+}
+
+.covid-data .label {
+    color: #78716C;
+    font-weight: 600;
+}
+
+.data-block {
+    min-width: 300px;
+    padding-bottom: 50px;
+}

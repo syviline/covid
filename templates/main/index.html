@@ -1,0 +1,58 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block content %}
+    <div class="container">
+        <div class="covid-info">
+            <div class="label">
+                <div class="left">
+                    <h1 class="covid-data-label">Данные по COVID-19</h1>
+                    <h3 class="last-update">Последнее обновление: 14.10.2021 09:34</h3>
+                </div>
+                <div class="right">
+                    <img src="{% static 'img/no-virus.png' %}" alt="" class="virus-img">
+                </div>
+            </div>
+            <div class="data-choice">
+                <a class="selected" onclick="dataChoice('russia')" id="russia-data-choice">Россия</a>
+                <a class="" onclick="dataChoice('world')" id="world-data-choice">Мир</a>
+            </div>
+            <div class="covid-data">
+                <div class="data-block">
+                    <div class="number" style="color: #C2410C" id="infected">7 861 681</div>
+                    <div class="label">Всего заражено</div>
+                </div>
+                <div class="data-block">
+                    <div class="number" style="color: #065F46" id="recovered">6 916 086</div>
+                    <div class="label">Выздоровело</div>
+                </div>
+                <div class="data-block">
+                    <div class="number" style="color: #C2410C" id="infected-day">28 717</div>
+                    <div class="label">Выявлено за последние сутки</div>
+                </div>
+                <div class="data-block">
+                    <div class="number" style="color: #000" id="deaths">219 329</div>
+                    <div class="label">Человек умерло</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        let covidData = {
+            russia: {
+                infected: 7861681,
+                recovered: 6916086,
+                infectedDay: 28717,
+                deaths: 219329
+            },
+            world: {
+                infected: 240023070,
+                recovered: 217346237,
+                infectedDay: 201657,
+                deaths: 4891303
+            }
+        }
+    </script>
+    <script src="{% static 'js/script.js' %}"></script>
+{#<canvas id="canvas"></canvas>#}
+{% endblock %}
