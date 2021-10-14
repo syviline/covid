@@ -77,3 +77,11 @@
     min-width: 300px;
     padding-bottom: 50px;
 }
+
+.stats {
+    margin-top: 50px;
+}
+
+.stats h1 {
+    font-size: 48px;
+}
