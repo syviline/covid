@@ -699,6 +699,7 @@ let chart = new Chart(ctx, {
         }]
     },
     options: {
+        responsive: true,
         scales: {
             y: {
                 beginAtZero: true
@@ -706,6 +707,8 @@ let chart = new Chart(ctx, {
         }, hover: {
             mode: 'nearest',
             intersect: true
+        }, interaction: {
+            intersect: false
         }
     }
 })
