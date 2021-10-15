@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-0kcy6_xflvz6vr(6&cw!kdn4xtu2u0wo1tg6!h%6-gdax6)di^
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize'
 ]
 
 MIDDLEWARE = [
@@ -48,7 +49,10 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'ipinfo_django.middleware.IPinfo',
 ]
+
+# IPINFO_TOKEN = '030b628b17d1bf'
 
 ROOT_URLCONF = 'hackathon.urls'
 

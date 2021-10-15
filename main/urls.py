@@ -3,5 +3,7 @@ from . import views
 # Create your views here.
 
 urlpatterns = [
-    path('', views.index)
+    path('dev', views.development),
+    path('', views.redirect_country),
+    path('<str:country>', views.index),
 ]

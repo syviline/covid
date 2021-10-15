@@ -10,8 +10,26 @@
     padding: 0 20px;
 }
 
+header {
+    display: flex;
+    justify-content: flex-end;
+    padding-top: 30px;
+}
+
+.country-choice-label {
+    margin-right: 80px;
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+}
+
+.country-choice-label .arrow {
+    font-weight: 600;
+}
+
 .covid-info {
-    margin-top: 100px;
+    margin-top: 40px;
 }
 
 .covid-info .label {
@@ -36,24 +54,14 @@
     height: 256px;
 }
 
-.data-choice {
-    display: flex;
-    justify-content: center;
+.country-name {
     margin-top: 50px;
-}
-
-.data-choice a.selected {
-    color: #4338CA;
-    border-bottom: 3px solid #4338CA;
-}
-
-.data-choice a {
-    width: 100px;
-    text-align: center;
-    padding: 0 20px 10px 20px;
+    font-size: 36px;
+    color: #262626;
+    padding-bottom: 10px;
+    padding-left: 40px;
     font-weight: 600;
-    font-size: 24px;
-    cursor: pointer;
+    border-bottom: 2px solid #64748B;
 }
 
 .covid-data {
@@ -84,4 +92,60 @@
 
 .stats h1 {
     font-size: 48px;
+}
+
+.country-choice {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    background-color: #FFF;
+    padding: 100px 0;
+    box-sizing: border-box;
+}
+
+.country-choice .country-list {
+    display: flex;
+    overflow-y: auto;
+    height: 70vh;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+
+.country-choice .country-list a {
+    text-decoration: none;
+    color: #262626;
+    font-size: 20px;
+    padding: 20px;
+    width: 160px;
+    height: 40px;
+    text-align: center;
+}
+
+.country-choice #search {
+    width: 100%;
+    margin-bottom: 20px;
+    padding: 10px;
+    padding-left: 40px;
+    outline: none;
+    border: 2px solid #D4D4D4;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.country-choice.disabled {
+    display: none;
+}
+
+.country-choice-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.country-choice-header #close {
+    font-weight: 600;
+    font-size: 24px;
+    vertical-align: center;
 }
