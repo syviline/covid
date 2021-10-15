@@ -9,6 +9,10 @@
 /*    background-color: rgba(0, 0, 0, 0.1);*/
 /*}*/
 
+body {
+    position: relative;
+}
+
 .container {
     max-width: 1200px;
     margin: 0 auto;
@@ -233,12 +237,21 @@ header {
     font-weight: 600;
 }
 
+#prompt {
+    background-color: #E5E5E5;
+    position: absolute;
+    padding: 10px;
+    border-radius: 5px;
+    font-weight: 600;
+}
+
 path {
     transition: 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+    cursor: pointer;
 }
 
 path:hover {
-    fill: #FFF;
+    fill: #C2410C;
     transition: 0.4s cubic-bezier(0.19, 1, 0.22, 1);
 }
 
