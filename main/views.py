@@ -357,7 +357,7 @@ def region(request):
             if i == '225':
                 continue
             d = r['russia_stat_struct']['data'][i]['info']
-            newr[d['name']] = {'population': d['population'], 'cases': d['cases'], 'cases_delta': d['cases_delta'], 'deaths': d['deaths'], 'deaths_delta': d['deaths_delta']}
+            newr[d['name']] = {'population': d['population'], 'cases': d['cases'], 'cases_delta': d['cases_delta'], 'deaths': d['deaths'], 'deaths_delta': d['deaths_delta'], 'date': d['date']}
         print(newr)
         data.data = json.dumps(newr)
         data.lastUpdated = time.time()

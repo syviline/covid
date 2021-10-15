@@ -4,6 +4,11 @@
     font-family: 'Segoe UI', sans-serif;
 }
 
+/*body {*/
+/*    background: url("/static/img/bg2.png");*/
+/*    background-color: rgba(0, 0, 0, 0.1);*/
+/*}*/
+
 .container {
     max-width: 1200px;
     margin: 0 auto;
@@ -226,6 +231,15 @@ header {
 .region-data-block .number {
     font-size: 48px;
     font-weight: 600;
+}
+
+path {
+    transition: 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+path:hover {
+    fill: #FFF;
+    transition: 0.4s cubic-bezier(0.19, 1, 0.22, 1);
 }
 
 @media (max-width: 650px) {
