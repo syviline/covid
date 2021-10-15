@@ -1,7 +1,9 @@
-from django.shortcuts import render, redirect
-from .models import CountryStatistics, ipCountries, HistoricData
+from django.shortcuts import render, redirect, HttpResponse
+from .models import CountryStatistics, ipCountries, HistoricData, Regions
 import requests
 from datetime import datetime as dt
+import json
+import time
 
 
 countries = {
@@ -254,21 +256,74 @@ def redirect_country(request):
 def index(request, country):
     if country.upper() not in countries.keys():
         return redirect('/')
+    historicdata = HistoricData.objects.filter(country=country.upper())
+    history = ''
+    if not historicdata:
+        history = 'no_data'
+    historicdata = historicdata[0]
+    if time.time() - historicdata.updatedClient > 3600:
+        if country.lower() != 'world':
+            r = requests.get(f'https://disease.sh/v3/covid-19/historical/{country}?lastdays=all').json()
+        else:
+            newr = requests.get('https://disease.sh/v3/covid-19/historical/all?lastdays=all').json()
+            r = {"timeline": newr}
+        historicdata.data = json.dumps(r)
+        historicdata.updatedClient = time.time()
+        historicdata.save()
+    history = json.loads(historicdata.data)
+    if 'message' in history:
+        history = 'no_data'
     countrydata = CountryStatistics.objects.get(country=country.upper())
+    if time.time() - countrydata.updatedClient > 3600:
+        if country.lower() != 'world':
+            r = requests.get(f'https://disease.sh/v3/covid-19/countries/{country}?strict=true').json()
+        else:
+            r = requests.get('https://disease.sh/v3/covid-19/all').json()
+        countrydata.cases = r['cases']
+        countrydata.todayCases = r['todayCases']
+        countrydata.deaths = r['deaths']
+        countrydata.todayDeaths = r['todayDeaths']
+        countrydata.recovered = r['recovered']
+        countrydata.todayRecovered = r['todayRecovered']
+        countrydata.active = r['active']
+        countrydata.updated = r['updated']
+        countrydata.updatedClient = time.time()
+        countrydata.json = str(r)
+        countrydata.save()
     lastupdated = countrydata.updated
+    topCases = '{}'
+    topDeaths = '{}'
+    if country == 'world':
+        topCasesDB = CountryStatistics.objects.all().order_by('-cases').exclude(country='WORLD')[:10]
+        topDeathsDB = CountryStatistics.objects.all().order_by('-deaths').exclude(country='WORLD')[:10]
+        topCases = {}
+        topDeaths = {}
+        for i in topCasesDB:
+            topCases[countries[i.country]] = i.cases
+        for i in topDeathsDB:
+            topDeaths[countries[i.country]] = i.deaths
     datetime = dt.fromtimestamp(int(lastupdated/1000))
     lastupdatedstring = datetime.strftime('%d.%m.%Y %H:%M:%S')
-    print(datetime)
-    return render(request, 'main/index.html', {'data': countrydata, 'countryName': countries[country.upper()], 'lastUpdated': lastupdatedstring, 'countryList': countries})
+    return render(request, 'main/index.html', {'data': countrydata, 'countryName': countries[country.upper()], 'lastUpdated': lastupdatedstring, 'countryList': countries, 'history': history, 'topCases': str(topCases), 'topDeaths': str(topDeaths)})
+
+
+def getHistoricalStatistics(request, country, timespan):
+    data = HistoricData.objects.filter(country=country.upper())
+    if not data:
+        return HttpResponse(json.dumps({'error': 'country not found'}))
+    data = json.loads(data)
+    if 'message' in data:
+        return HttpResponse('no_data')
+    return HttpResponse(1)
 
 
 def development(request):
-    j = 0
-    for i in countries.keys():
-        print(j)
-        r = requests.get(f'https://disease.sh/v3/covid-19/historical/{i}?lastdays=all').json()
-        HistoricData.objects.create(country=i, data=r)
-        j += 1
+    # j = 0
+    # for i in countries.keys():
+    #     print(j)
+    #     r = requests.get(f'https://disease.sh/v3/covid-19/historical/{i}?lastdays=all').json()
+    #     HistoricData.objects.create(country=i, data=r)
+    #     j += 1
     # print(r[0])
     # for i in r:
     #     if not i['countryInfo']['iso2']:
@@ -281,4 +336,31 @@ def development(request):
     #         continue
     #     CountryStatistics.objects.create(country=i['countryInfo']['iso2'], cases=i['cases'], todayCases=i['todayCases'], deaths=i['deaths'], todayDeaths=i['todayDeaths'], recovered=i['recovered'], todayRecovered=i['todayRecovered'], active=i['active'], updated=i['updated'], json=str(i))
     #     j += 1
+    # for i in HistoricData.objects.all():
+    #     i.data = i.data.replace("'", '"')
+    #     i.save()
+    a = CountryStatistics.objects.all().order_by('-cases').exclude(country='WORLD')[:10]
+    for i in a:
+        print(i.country)
     return render(request, 'main/index.html')
+
+
+def region(request):
+    # r = requests.get('https://milab.s3.yandex.net/2020/covid19-stat/data/v10/default_data.json').json()
+    # print(json.dumps(r['russia_stat_struct']['data']))
+    # Regions.objects.create(data=json.dumps(r['russia_stat_struct']['data']), lastUpdated=time.time())
+    data = Regions.objects.get(id=1)
+    if time.time() - data.lastUpdated > 3600:
+        r = requests.get('https://milab.s3.yandex.net/2020/covid19-stat/data/v10/default_data.json').json()
+        newr = {}
+        for i in r['russia_stat_struct']['data'].keys():
+            if i == '225':
+                continue
+            d = r['russia_stat_struct']['data'][i]['info']
+            newr[d['name']] = {'population': d['population'], 'cases': d['cases'], 'cases_delta': d['cases_delta'], 'deaths': d['deaths'], 'deaths_delta': d['deaths_delta']}
+        print(newr)
+        data.data = json.dumps(newr)
+        data.lastUpdated = time.time()
+        data.save()
+    a = json.loads(data.data)
+    return render(request, 'main/region.html', {'data': a})

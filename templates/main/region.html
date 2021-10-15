@@ -1,0 +1,64 @@
+{% extends 'main/base.html' %}
+{% block content %}
+    <div class="container">
+        <div class="content-regions">
+            <div class="region-header">
+                <h4>Данные по регионам</h4>
+                <div class="form">
+                    <input list="regions" name="regions" id="region-input" placeholder="Начните вводить регион...">
+                    <datalist id="regions">
+                    {% for i in data.keys %}
+                        <option value="{{ i }}">
+                    {% endfor %}
+                    </datalist>
+                <button type="submit" onclick="changeRegion()">Изменить регион</button>
+                </div>
+            </div>
+            <h1 id="region-name">Московская область</h1>
+            <div class="region-stats">
+                <div class="region-data-block">
+                    <div class="number" id="cases" style="color: #C2410C;">21</div>
+                    <div class="label">Всего зараженных</div>
+                </div>
+                <div class="region-data-block">
+                    <div class="number" id="cases-today" style="color: #C2410C;">21</div>
+                    <div class="label">Зараженных сегодня</div>
+                </div>
+                <div class="region-data-block">
+                    <div class="number" id="deaths">21</div>
+                    <div class="label">Смертей</div>
+                </div>
+                <div class="region-data-block">
+                    <div class="number" id="deaths-today">21</div>
+                    <div class="label">Смертей за сегодня</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function numberWithSpaces(x) {
+            return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+        }
+
+        let regions = {{ data|safe }}
+        function changeRegion() {
+            let region = document.querySelector('#region-input').value
+            let keys = Object.keys(regions)
+            for (let i = 0; i < keys.length; i++) {
+                if (keys[i].includes(region)) {
+                    k = keys[i]
+                    document.querySelector('#region-name').innerText = k
+                    document.querySelector("#cases").innerText = numberWithSpaces(regions[k].cases)
+                    document.querySelector("#cases-today").innerText = numberWithSpaces(regions[k].cases_delta)
+                    document.querySelector("#deaths").innerText = numberWithSpaces(regions[k].deaths)
+                    document.querySelector("#deaths-today").innerText = numberWithSpaces(regions[k].deaths_delta)
+                    break
+                }
+            }
+        }
+        document.querySelector("#cases").innerText = numberWithSpaces(regions["Московская область"].cases)
+        document.querySelector("#cases-today").innerText = numberWithSpaces(regions["Московская область"].cases_delta)
+        document.querySelector("#deaths").innerText = numberWithSpaces(regions["Московская область"].deaths)
+        document.querySelector("#deaths-today").innerText = numberWithSpaces(regions["Московская область"].deaths_delta)
+    </script>
+{% endblock %}

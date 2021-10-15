@@ -12,6 +12,7 @@ class CountryStatistics(models.Model):
     todayRecovered = models.IntegerField()
     active = models.IntegerField()
     updated = models.IntegerField()
+    updatedClient = models.IntegerField(default=0)
     json = models.TextField()
 
 
@@ -23,3 +24,13 @@ class ipCountries(models.Model):
 class HistoricData(models.Model):
     country = models.CharField(max_length=255)
     data = models.TextField()
+    updatedClient = models.IntegerField(default=0)
+
+
+class TopCountries(models.Model):
+    data = models.TextField()
+
+
+class Regions(models.Model):
+    data = models.TextField()
+    lastUpdated = models.IntegerField()
