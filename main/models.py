@@ -35,3 +35,8 @@ class TopCountries(models.Model):
 class Regions(models.Model):
     data = models.TextField()
     lastUpdated = models.IntegerField()
+
+
+class Vaccination(models.Model):
+    data = models.TextField()
+    lastUpdated = models.IntegerField()

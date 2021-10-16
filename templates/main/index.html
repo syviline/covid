@@ -20,9 +20,7 @@
     </div>
     <div class="container">
         <header>
-            {% if countryName == 'Россия' %}
-                <a href="region" style="text-decoration: none; color: black; font-size: 18px; margin-right: 50px;">Регионы</a>
-            {% endif %}
+            <a href="region" style="text-decoration: none; color: black; font-size: 18px; margin-right: 50px;">Регионы России</a>
             <a class="country-choice-label" onclick="toggleCountryChoice()">{{ countryName }} <img class="arrow" src="{% static 'img/arrow.svg' %}" height="20px" width="20px"></img></a>
         </header>
         <div class="covid-info">

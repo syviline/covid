@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, HttpResponse
-from .models import CountryStatistics, ipCountries, HistoricData, Regions
+from .models import CountryStatistics, ipCountries, HistoricData, Regions, Vaccination
 import requests
 from datetime import datetime as dt
 import json
@@ -362,13 +362,19 @@ def region(request):
         r = requests.get('https://milab.s3.yandex.net/2020/covid19-stat/data/v10/default_data.json').json()
         newr = {}
         for i in r['russia_stat_struct']['data'].keys():
+            print(i)
             if i == '225':
                 continue
             d = r['russia_stat_struct']['data'][i]['info']
-            newr[d['name']] = {'population': d['population'], 'cases': d['cases'], 'cases_delta': d['cases_delta'], 'deaths': d['deaths'], 'deaths_delta': d['deaths_delta'], 'date': d['date']}
+            newr[d['name']] = {'population': d['population'], 'cases': d['cases'], 'cases_delta': d['cases_delta'], 'deaths': d['deaths'], 'deaths_delta': d['deaths_delta'], 'date': d['date'], 'id': i}
         print(newr)
         data.data = json.dumps(newr)
         data.lastUpdated = time.time()
         data.save()
     a = json.loads(data.data)
     return render(request, 'main/region.html', {'data': a})
+
+
+def regionHistory(request, regionid):
+    r = requests.get(f'https://milab.s3.yandex.net/2020/covid19-stat/data/v10/data-by-region/{regionid}.json').json()
+    return HttpResponse(str(r['cases']))
