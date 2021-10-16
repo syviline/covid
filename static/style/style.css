@@ -178,7 +178,7 @@ header {
     display: flex;
     justify-content: center;
     cursor: pointer;
-    margin-top: 20px;
+    margin-top: 5px;
 }
 
 .timespan-choose a {
