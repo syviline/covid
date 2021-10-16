@@ -133,14 +133,7 @@
             return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
         }
 
-        let mapIds = {
-    "RU-MOW": "Москва",
-    "RU-CHE": "Челябинская область",
-    "RU-ORL": "Орловская область",
-    "RU-OMS": "Омская область",
-    "RU-LIP": "Липецкая область",
-    "RU-KRS": "Курская область",
-    "RU-RYA": "Рязанская область",
+        let mapIds = {"RU-MOW": "Москва", "RU-CHE": "Челябинская область", "RU-ORL": "Орловская область", "RU-OMS": "Омская область", "RU-LIP": "Липецкая область", "RU-KRS": "Курская область", "RU-RYA": "Рязанская область",
     "RU-BRY": "Брянская область",
     "RU-KIR": "Кировская область",
     "RU-ARK": "Архангельская область",
@@ -221,8 +214,8 @@
     "RU-TUL": "Тульская область"
 }
 
-        let regions = {{ data|safe }}
-        function changeRegion(givenRegion='') {
+        let regions = {{ data|safe }} // данные со статистикой по регионам
+        function changeRegion(givenRegion='') { // изменение региона
             if (givenRegion == '') {
                 let region = document.querySelector('#region-input').value
                 let keys = Object.keys(regions)
@@ -258,22 +251,22 @@
         let promptСases = document.querySelector('#prompt-cases')
         let promptDeaths = document.querySelector('#prompt-deaths')
 
-        document.querySelectorAll('path').forEach(obj => {
+        document.querySelectorAll('path').forEach(obj => { // ивенты кликов для карты
             obj.setAttribute('stroke', '#FFF')
             obj.setAttribute('stroke-width', 1)
             obj.addEventListener('click', ev => {
                 changeRegion(mapIds[ev.target.id])
             })
-            obj.addEventListener('mouseover', ev => {
+            obj.addEventListener('mouseover', ev => { // при наведении на регион показываем подсказку
                 promptRegionName.innerText = mapIds[ev.target.id]
                 promptСases.innerText = regions[mapIds[ev.target.id]].cases
                 promptDeaths.innerText = regions[mapIds[ev.target.id]].deaths
                 promptElement.style.display = 'block'
             })
-            obj.addEventListener('mouseleave', ev => {
+            obj.addEventListener('mouseleave', ev => { // при убирании с региона убираем подсказку
                 promptElement.style.display = 'none'
             })
-            obj.addEventListener('mousemove', ev => {
+            obj.addEventListener('mousemove', ev => { // двигаем подсказку если двигается мышь
                 console.log(ev)
                 promptElement.style.top = (ev.pageY + 10).toString() + 'px'
                 promptElement.style.left = (ev.pageX + 10).toString() + 'px'

@@ -36,7 +36,7 @@
                 </div>
             </div>
             <div class="country-block">
-                <div class="country-name">{{ countryName }}</div>
+                <div class="country-name">{{ countryName }} <span id="tory" style="font-weight: 600; font-size: 36px; color: #777;">сегодня</span></div>
                 {% if data.yesterdayData %}
                     <button onclick="toggleData()" id="toggle-data">Показать данные за вчера</button>
                 {% endif %}

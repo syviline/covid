@@ -66,11 +66,11 @@ let deaths90d = document.querySelector('#deaths90d')
 let deaths180d = document.querySelector('#deaths180d')
 let deathsalld = document.querySelector('#deathsalld')
 
-function numberWithSpaces(x) {
+function numberWithSpaces(x) { // превращает число 74328234 в 74 328 234
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
 }
 
-let infectedElement = document.querySelector('#infected')
+let infectedElement = document.querySelector('#infected') // элементы со статистикой
 let recoveredElement = document.querySelector('#recovered')
 let infectedDayElement = document.querySelector('#infected-day')
 let deathsElement = document.querySelector('#deaths')
@@ -90,7 +90,7 @@ let elsDict = [
 //     elsDict.push({num: n, thisnum: 0, numd: Math.round(n / 200)})
 // }
 animate()
-function animate() {
+function animate() {  // анимация цифр на главной странице
     needFrame = false
     for (let i = 0; i < els.length; i++) {
         if (elsDict[i].numd > 0) {
@@ -122,7 +122,7 @@ function animate() {
     // }
 }
 
-if (history != 'no_data') {
+if (history != 'no_data') { // показывать графики с историей
     canvasCases = document.querySelector('#canvas-cases')
     ctxCases = canvasCases.getContext('2d')
     canvasDeaths = document.querySelector('#canvas-deaths')
@@ -195,7 +195,7 @@ let countryListItem = document.querySelector('.country-list')
 let searchBar = document.querySelector('#search')
 let countryChoiceItem = document.querySelector('.country-choice')
 
-function toggleCountryChoice() {
+function toggleCountryChoice() { // открыть окно с выбором страны
     if (countryChoiceItem.classList.contains('disabled')) {
         countryChoiceItem.classList.remove('disabled')
     } else {
@@ -203,7 +203,7 @@ function toggleCountryChoice() {
     }
 }
 
-function searchUpdate() {
+function searchUpdate() { // поиск по странам
     countryListItem.innerHTML = ''
     let val = searchBar.value.toLowerCase()
     let newobj = {}
@@ -218,12 +218,12 @@ function searchUpdate() {
 
 }
 
-function graphCases(num, id) {
+function graphCases(num, id) { // график случаев заражения для страны
     cases30d.classList.remove('active')
     cases90d.classList.remove('active')
     cases180d.classList.remove('active')
     casesalld.classList.remove('active')
-    document.querySelector('#' + id).classList.add('active')
+    document.querySelector('#' + id).classList.add('active') // при нажатии на кнопку выделяем ее синим
     if (num != 'all') {
         thiscases = Object.keys(history.timeline.cases)
         thiscases = thiscases.slice(thiscases.length - num)
@@ -268,7 +268,7 @@ function graphCases(num, id) {
 })
 }
 
-function graphDeaths(num, id) {
+function graphDeaths(num, id) { // график смертей для страны
     deaths30d.classList.remove('active')
     deaths90d.classList.remove('active')
     deaths180d.classList.remove('active')
@@ -318,7 +318,7 @@ function graphDeaths(num, id) {
     })
 }
 
-let canvasTopCases = document.querySelector("#top-cases")
+let canvasTopCases = document.querySelector("#top-cases") // график с топом стран по заражаемости
 let ctxTopCases = canvasTopCases.getContext('2d')
 let chartTopCases = new Chart(ctxTopCases, {
     type: 'bar',
@@ -349,7 +349,7 @@ let chartTopCases = new Chart(ctxTopCases, {
     }
     })
 
-let canvasTopDeaths = document.querySelector('#top-deaths')
+let canvasTopDeaths = document.querySelector('#top-deaths') // график с топом стран по смертям
 let ctxTopDeaths = canvasTopDeaths.getContext('2d')
 let chartTopDeaths = new Chart(ctxTopDeaths, {
     type: 'bar',
@@ -381,7 +381,7 @@ let chartTopDeaths = new Chart(ctxTopDeaths, {
     })
 
 
-function toggleData() {
+function toggleData() { // изменение данных на вчерашние и сегодняшние
     let changeCoef = 30
     if (currentData == 'today') {
         elsDict = [
@@ -392,6 +392,7 @@ function toggleData() {
             {num: yesterdayData.todayDeaths, thisnum: todayData.todayDeaths, numd: Math.round((yesterdayData.todayDeaths - todayData.todayDeaths) / changeCoef)},
             {num: yesterdayData.active, thisnum: todayData.active, numd: Math.round((yesterdayData.active - todayData.active) / changeCoef)}]
         animate()
+        document.querySelector('#tory').innerText = 'вчера'
         document.querySelector('#toggle-data').innerText = 'Показать данные за сегодня'
         currentData = 'yesterday'
     } else {
@@ -403,6 +404,7 @@ function toggleData() {
             {num: todayData.todayDeaths, thisnum: yesterdayData.todayDeaths, numd: -Math.round((yesterdayData.todayDeaths - todayData.todayDeaths) / changeCoef)},
             {num: todayData.active, thisnum: yesterdayData.active, numd: -Math.round((yesterdayData.active - todayData.active) / changeCoef)}]
         animate()
+        document.querySelector('#tory').innerText = 'сегодня'
         document.querySelector('#toggle-data').innerText = 'Показать данные за вчера'
         currentData = 'today'
     }
