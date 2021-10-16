@@ -64,14 +64,25 @@ header {
     height: 256px;
 }
 
-.country-name {
+.country-block {
+    display: flex;
+    justify-content: space-between;
     margin-top: 50px;
     font-size: 36px;
     color: #262626;
-    padding-bottom: 10px;
-    padding-left: 40px;
+    padding: 0 30px 10px 30px;
     font-weight: 600;
     border-bottom: 2px solid #64748B;
+}
+
+.country-block button {
+    border: none;
+    background-color: #737373;
+    color: #FFF;
+    padding: 15px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
 }
 
 .covid-data {
@@ -232,13 +243,14 @@ header {
     width: 200px;
 }
 
+
 .region-data-block .number {
     font-size: 48px;
     font-weight: 600;
 }
 
 #prompt {
-    background-color: #E5E5E5;
+    background-color: #FAFAF9;
     position: absolute;
     padding: 10px;
     border-radius: 5px;

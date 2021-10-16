@@ -66,6 +66,62 @@ let deaths90d = document.querySelector('#deaths90d')
 let deaths180d = document.querySelector('#deaths180d')
 let deathsalld = document.querySelector('#deathsalld')
 
+function numberWithSpaces(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+}
+
+let infectedElement = document.querySelector('#infected')
+let recoveredElement = document.querySelector('#recovered')
+let infectedDayElement = document.querySelector('#infected-day')
+let deathsElement = document.querySelector('#deaths')
+let deathsDayElement = document.querySelector('#deaths-day')
+let activeElement = document.querySelector('#active')
+let els = [infectedElement, recoveredElement, infectedDayElement, deathsElement, deathsDayElement, activeElement]
+let elsDict = [
+    {num: todayData.cases, thisnum: Math.round(todayData.cases / 2), numd: Math.round(todayData.cases / 200)},
+    {num: todayData.recovered, thisnum: Math.round(todayData.recovered / 2), numd: Math.round(todayData.recovered / 200)},
+    {num: todayData.todayCases, thisnum: Math.round(todayData.todayCases / 2), numd: Math.round(todayData.todayCases / 200)},
+    {num: todayData.deaths, thisnum: Math.round(todayData.deaths / 2), numd: Math.round(todayData.deaths / 200)},
+    {num: todayData.todayDeaths, thisnum: Math.round(todayData.todayDeaths / 2), numd: Math.round(todayData.todayDeaths / 200)},
+    {num: todayData.active, thisnum: Math.round(todayData.active / 2), numd: Math.round(todayData.active / 200)}
+]
+// for (let i = 0; i < els.length; i++) {
+//     let n = parseInt(els[i].innerText.replaceAll(',', ''))
+//     elsDict.push({num: n, thisnum: 0, numd: Math.round(n / 200)})
+// }
+animate()
+function animate() {
+    needFrame = false
+    for (let i = 0; i < els.length; i++) {
+        if (elsDict[i].numd > 0) {
+            if (elsDict[i].thisnum < elsDict[i].num) {
+                elsDict[i].thisnum += elsDict[i].numd
+                els[i].innerText = numberWithSpaces(elsDict[i].thisnum)
+                needFrame = true
+            } else {
+                els[i].innerText = numberWithSpaces(elsDict[i].num)
+            }
+        } else {
+            if (elsDict[i].thisnum > elsDict[i].num) {
+                elsDict[i].thisnum += elsDict[i].numd
+                els[i].innerText = numberWithSpaces(elsDict[i].thisnum)
+                needFrame = true
+            } else {
+                els[i].innerText = numberWithSpaces(elsDict[i].num)
+            }
+        }
+    }
+    if (needFrame)
+        requestAnimationFrame(animate)
+    // if (thisnum < num) {
+    //     thisnum += numd
+    //     infectedElement.innerText = numberWithSpaces(thisnum)
+    //     requestAnimationFrame(animate)
+    // } else {
+    //     infectedElement.innerText = numberWithSpaces(num)
+    // }
+}
+
 if (history != 'no_data') {
     canvasCases = document.querySelector('#canvas-cases')
     ctxCases = canvasCases.getContext('2d')
@@ -323,3 +379,31 @@ let chartTopDeaths = new Chart(ctxTopDeaths, {
         }
     }
     })
+
+
+function toggleData() {
+    let changeCoef = 30
+    if (currentData == 'today') {
+        elsDict = [
+            {num: yesterdayData.cases, thisnum: todayData.cases, numd: Math.round((yesterdayData.cases - todayData.cases) / changeCoef)},
+            {num: yesterdayData.recovered, thisnum: todayData.recovered, numd: Math.round((yesterdayData.recovered - todayData.recovered) / changeCoef)},
+            {num: yesterdayData.todayCases, thisnum: todayData.todayCases, numd: Math.round((yesterdayData.todayCases - todayData.todayCases) / changeCoef)},
+            {num: yesterdayData.deaths, thisnum: todayData.deaths, numd: Math.round((yesterdayData.deaths - todayData.deaths) / changeCoef)},
+            {num: yesterdayData.todayDeaths, thisnum: todayData.todayDeaths, numd: Math.round((yesterdayData.todayDeaths - todayData.todayDeaths) / changeCoef)},
+            {num: yesterdayData.active, thisnum: todayData.active, numd: Math.round((yesterdayData.active - todayData.active) / changeCoef)}]
+        animate()
+        document.querySelector('#toggle-data').innerText = 'Показать данные за сегодня'
+        currentData = 'yesterday'
+    } else {
+        elsDict = [
+            {num: todayData.cases, thisnum: yesterdayData.cases, numd: -Math.round((yesterdayData.cases - todayData.cases) / changeCoef)},
+            {num: todayData.recovered, thisnum: yesterdayData.recovered, numd: -Math.round((yesterdayData.recovered - todayData.recovered) / changeCoef)},
+            {num: todayData.todayCases, thisnum: yesterdayData.todayCases, numd: -Math.round((yesterdayData.todayCases - todayData.todayCases) / changeCoef)},
+            {num: todayData.deaths, thisnum: yesterdayData.deaths, numd: -Math.round((yesterdayData.deaths - todayData.deaths) / changeCoef)},
+            {num: todayData.todayDeaths, thisnum: yesterdayData.todayDeaths, numd: -Math.round((yesterdayData.todayDeaths - todayData.todayDeaths) / changeCoef)},
+            {num: todayData.active, thisnum: yesterdayData.active, numd: -Math.round((yesterdayData.active - todayData.active) / changeCoef)}]
+        animate()
+        document.querySelector('#toggle-data').innerText = 'Показать данные за вчера'
+        currentData = 'today'
+    }
+}

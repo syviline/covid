@@ -245,7 +245,12 @@ def redirect_country(request):
     ip = get_client_ip(request)
     ipindb = ipCountries.objects.filter(ip=ip)
     if not ipindb:
-        country = request.ipinfo.country.lower()
+        try:
+            country = request.ipinfo.country.lower()
+        except:
+            return redirect('/world')
+        if not country:
+            return redirect('/world')
         ipCountries.objects.create(ip=ip, country=country)
         return redirect('/' + country)
     else:
@@ -277,8 +282,10 @@ def index(request, country):
     if time.time() - countrydata.updatedClient > 3600:
         if country.lower() != 'world':
             r = requests.get(f'https://disease.sh/v3/covid-19/countries/{country}?strict=true').json()
+            r2 = requests.get(f'https://disease.sh/v3/covid-19/countries/{country}?yesterday=1&strict=true').json()
         else:
             r = requests.get('https://disease.sh/v3/covid-19/all').json()
+            r2 = requests.get('https://disease.sh/v3/covid-19/all?yesterday=1').json()
         countrydata.cases = r['cases']
         countrydata.todayCases = r['todayCases']
         countrydata.deaths = r['deaths']
@@ -289,6 +296,7 @@ def index(request, country):
         countrydata.updated = r['updated']
         countrydata.updatedClient = time.time()
         countrydata.json = str(r)
+        countrydata.yesterdayData = str(r2)
         countrydata.save()
     lastupdated = countrydata.updated
     topCases = '{}'

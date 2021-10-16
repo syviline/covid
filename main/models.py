@@ -14,6 +14,7 @@ class CountryStatistics(models.Model):
     updated = models.IntegerField()
     updatedClient = models.IntegerField(default=0)
     json = models.TextField()
+    yesterdayData = models.TextField(null=True)
 
 
 class ipCountries(models.Model):

@@ -274,13 +274,14 @@
                 promptElement.style.display = 'none'
             })
             obj.addEventListener('mousemove', ev => {
-                promptElement.style.top = (ev.clientY + 10).toString() + 'px'
-                promptElement.style.left = (ev.clientX + 10).toString() + 'px'
+                console.log(ev)
+                promptElement.style.top = (ev.pageY + 10).toString() + 'px'
+                promptElement.style.left = (ev.pageX + 10).toString() + 'px'
             })
         })
 
         Object.keys(mapIds).forEach(key => {
-            let d = Math.round(regions[mapIds[key]].cases / regions[mapIds[key]].population * 1500)
+            let d = Math.round(regions[mapIds[key]].cases / regions[mapIds[key]].population * 1000)
             {#console.log(d)#}
             document.querySelector('#' + key).setAttribute('fill', '#' + (200 - d).toString(16) + '00' + '00')
         })

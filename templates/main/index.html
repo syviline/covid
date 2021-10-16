@@ -35,30 +35,35 @@
                     <img src="{% static 'img/no-virus.png' %}" alt="" class="virus-img">
                 </div>
             </div>
-            <div class="country-name">{{ countryName }}</div>
+            <div class="country-block">
+                <div class="country-name">{{ countryName }}</div>
+                {% if data.yesterdayData %}
+                    <button onclick="toggleData()" id="toggle-data">Показать данные за вчера</button>
+                {% endif %}
+            </div>
             <div class="covid-data">
                 <div class="data-block">
-                    <div class="number" style="color: #C2410C" id="infected">{{ data.cases|intcomma }}</div>
+                    <div class="number" style="color: #C2410C" id="infected"></div>
                     <div class="label">Всего заболеваний</div>
                 </div>
                 <div class="data-block">
-                    <div class="number" style="color: #065F46" id="recovered">{{ data.recovered|intcomma }}</div>
+                    <div class="number" style="color: #065F46" id="recovered"></div>
                     <div class="label">Выздоровело</div>
                 </div>
                 <div class="data-block">
-                    <div class="number" style="color: #C2410C" id="infected-day">{{ data.todayCases|intcomma }}</div>
+                    <div class="number" style="color: #C2410C" id="infected-day"></div>
                     <div class="label">Выявлено за последние сутки</div>
                 </div>
                 <div class="data-block">
-                    <div class="number" style="color: #000" id="deaths">{{ data.deaths|intcomma }}</div>
+                    <div class="number" style="color: #000" id="deaths"></div>
                     <div class="label">Человек умерло</div>
                 </div>
                 <div class="data-block">
-                    <div class="number" style="color: #000" id="deaths">{{ data.todayDeaths|intcomma }}</div>
+                    <div class="number" style="color: #000" id="deaths-day"></div>
                     <div class="label">Умерло за сутки</div>
                 </div>
                 <div class="data-block">
-                    <div class="number" style="color: #EF4444" id="deaths">{{ data.active|intcomma }}</div>
+                    <div class="number" style="color: #EF4444" id="active"></div>
                     <div class="label">Активных случаев</div>
                 </div>
             </div>
@@ -105,9 +110,16 @@
     <script>
         let no_data = 'no_data'
         let countries = { {% for key, item in countryList.items %}{{ key }}: '{{ item }}', {% endfor %} }
-        let history = {{ history|safe }}
-        let topCases = {{ topCases|safe }}
-        let topDeaths = {{ topDeaths|safe }}
+        let history = {{ history|safe }};
+        let topCases = {{ topCases|safe }};
+        let topDeaths = {{ topDeaths|safe }};
+        {% if data.yesterdayData %}
+            let yesterdayData = {{ data.yesterdayData|safe }};
+        {% else %}
+            let yesterdayData = null;
+        {% endif %}
+        let todayData = {{ data.json|safe }}
+        let currentData = 'today';
     </script>
     <script src="{% static 'js/script.js' %}"></script>
 {#<canvas id="canvas"></canvas>#}
